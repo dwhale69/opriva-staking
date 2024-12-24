@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add responsive breakpoint */
+@screen xs {
+  /* Extra small devices */
+  @media (min-width: 475px) {
+    /* Add any specific styles for xs breakpoint */
+  }
+}
+
+body {
+  background: #141416;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 35%, rgba(131, 150, 250, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 75% 44%, rgba(131, 150, 250, 0.1) 0%, transparent 40%),
+    #141416;
+  z-index: -2;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+  100% { transform: translateY(0px) rotate(360deg); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+.star {
+  position: fixed;
+  width: 2px;
+  height: 2px;
+  background: #8396FA;
+  border-radius: 50%;
+  animation: twinkle 3s infinite;
+  z-index: -1;
+}
+
+.planet {
+  position: fixed;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #8396FA, #899CFA);
+  opacity: 0.1;
+  filter: blur(8px);
+  animation: float 20s infinite ease-in-out;
+  z-index: -1;
+}
+
+/* Loading Screen */
+.loading-screen {
+  font-family: 'Share Tech Mono', monospace;
+}
+
+@keyframes terminalGlow {
+  0%, 100% {
+    text-shadow: 0 0 10px #8396FA,
+                 0 0 20px #8396FA,
+                 0 0 30px #8396FA;
+  }
+  50% {
+    text-shadow: 0 0 20px #8396FA,
+                 0 0 30px #8396FA,
+                 0 0 40px #8396FA;
+  }
+}
+
+/* Bottom Navigation Animation */
+@keyframes navItemHover {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #141416;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8396FA;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #899CFA;
+}
+
+@layer utilities {
+  .glass-effect {
+    @apply bg-[#141416]/40 backdrop-blur-xl border border-[#8396FA]/10;
+  }
+  
+  .neon-border {
+    box-shadow: 0 0 5px #8396FA,
+                0 0 10px #8396FA,
+                inset 0 0 5px #8396FA;
+  }
+  
+  .neon-text {
+    text-shadow: 0 0 10px #8396FA,
+                 0 0 20px #8396FA,
+                 0 0 30px #8396FA;
+  }
+}
+
+.stats-card {
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+}
+
+.stats-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, #8396FA20, transparent, #899CFA20);
+  mask: linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  padding: 1px;
+  border-radius: inherit;
+  animation: borderGlow 4s linear infinite;
+}
+
+@keyframes borderGlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Firefox Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #8396FA #141416;
+}

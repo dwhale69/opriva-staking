@@ -1,0 +1,98 @@
+import React, { useState, useEffect } from 'react';
+import { Navbar } from './components/layout/Navbar';
+import { BottomNavbar } from './components/layout/BottomNavbar';
+import { StakingCard } from './components/staking/StakingCard';
+import { StatsGrid } from './components/stats/StatsGrid';
+import { LoadingScreen } from './components/loading/LoadingScreen';
+import { AdvertisingForm } from './components/advertising/AdvertisingForm';
+import { DAODashboard } from './components/dao/DAODashboard';
+import { StatsDashboard } from './components/stats/StatsDashboard';
+
+function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [activeSection, setActiveSection] = useState<'stake' | 'advertise' | 'dao' | 'stats'>('stake');
+
+  useEffect(() => {
+    const createStars = () => {
+      const container = document.body;
+      for (let i = 0; i < 50; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = `${Math.random() * 100}vw`;
+        star.style.top = `${Math.random() * 100}vh`;
+        star.style.animationDelay = `${Math.random() * 3}s`;
+        container.appendChild(star);
+      }
+
+      const planets = [
+        { size: 100, top: '20%', left: '80%' },
+        { size: 150, top: '60%', left: '10%' },
+        { size: 80, top: '40%', left: '60%' },
+      ];
+
+      planets.forEach((config) => {
+        const planet = document.createElement('div');
+        planet.className = 'planet';
+        planet.style.width = `${config.size}px`;
+        planet.style.height = `${config.size}px`;
+        planet.style.top = config.top;
+        planet.style.left = config.left;
+        planet.style.animationDelay = `${Math.random() * 2}s`;
+        container.appendChild(planet);
+      });
+    };
+
+    if (!isLoading) {
+      createStars();
+    }
+
+    return () => {
+      const stars = document.querySelectorAll('.star');
+      const planets = document.querySelectorAll('.planet');
+      stars.forEach(star => star.remove());
+      planets.forEach(planet => planet.remove());
+    };
+  }, [isLoading]);
+
+  const renderContent = () => {
+    switch (activeSection) {
+      case 'advertise':
+        return <AdvertisingForm />;
+      case 'dao':
+        return <DAODashboard />;
+      case 'stats':
+        return <StatsDashboard />;
+      case 'stake':
+        return (
+          <>
+            <div className="mb-12">
+              <StatsGrid />
+            </div>
+            <div className="flex justify-center w-full">
+              <StakingCard />
+            </div>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <>
+      {isLoading ? (
+        <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />
+      ) : (
+        <div className="min-h-screen w-full pb-16">
+          <Navbar />
+          <main className="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            {renderContent()}
+          </main>
+          <BottomNavbar activeSection={activeSection} onSectionChange={setActiveSection} />
+        </div>
+      )}
+    </>
+  );
+}
+
+export default App;
