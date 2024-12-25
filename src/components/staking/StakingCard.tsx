@@ -319,7 +319,7 @@ export const StakingCard = () => {
       <div className="flex flex-wrap justify-between items-center gap-2 mb-6">
         <h2 className="text-xl font-semibold text-white neon-text">Staking</h2>
         <div className="flex items-center gap-2">
-          <span className="text-[#899CFA] neon-text">APY: 4%</span>
+          <span className="text-[#899CFA] neon-text">APY: 240%</span>
           <Info size={16} className="text-gray-400" />
         </div>
       </div>

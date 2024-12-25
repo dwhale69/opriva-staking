@@ -25,7 +25,7 @@ export const StatsGrid = () => {
       />
       <StatCard
         title="Current APY"
-        value="4%"
+        value="240%"
         icon={Percent}
       />
     </div>
