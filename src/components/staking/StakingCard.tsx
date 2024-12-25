@@ -68,19 +68,19 @@ export const StakingCard = () => {
   };
 
   const dataBalance = useBalance({
-    chainId: 11155111,
+    chainId: 1,
     address: address ? address : undefined,
-    token: "0x9103a2a0D3eD017f8c1fF79d784d6a859f674dDA",
+    token: "0x938F2774E307A71882009A27E0e40e615415fE54",
   });
 
   const handleApprove = async (e) => {
     try {
       const a = await writeContract(config, {
         abi: token,
-        address: "0x9103a2a0D3eD017f8c1fF79d784d6a859f674dDA",
+        address: "0x938F2774E307A71882009A27E0e40e615415fE54",
         functionName: "approve",
         args: [
-          "0x909a18Ba49580f0277DF1700224ac27500841aD7",
+          "0x87Fd96905A40DDE52832ffC059405f788f76314C",
           "10000000000000000000000000000000000",
         ],
       });
@@ -111,7 +111,7 @@ export const StakingCard = () => {
     try {
       const a = await writeContract(config, {
         abi: staking,
-        address: "0x909a18Ba49580f0277DF1700224ac27500841aD7",
+        address: "0x87Fd96905A40DDE52832ffC059405f788f76314C",
         functionName: "stake",
         args: [parseUnits(amount, 18), times],
       });
@@ -142,7 +142,7 @@ export const StakingCard = () => {
     try {
       const a = await writeContract(config, {
         abi: staking,
-        address: "0x909a18Ba49580f0277DF1700224ac27500841aD7",
+        address: "0x87Fd96905A40DDE52832ffC059405f788f76314C",
         functionName: "claimReward",
         args: [e],
       });
@@ -168,9 +168,9 @@ export const StakingCard = () => {
   // const handleReward = (e) => {
   //   try {
   //     const a = readContract(config, {
-  //       chainId: 11155111,
+  //       chainId: 1,
   //       abi: staking,
-  //       address: "0x909a18Ba49580f0277DF1700224ac27500841aD7",
+  //       address: "0x87Fd96905A40DDE52832ffC059405f788f76314C",
   //       functionName: "calculateReward",
   //       args: [address, e],
   //     });
@@ -193,7 +193,7 @@ export const StakingCard = () => {
     try {
       const a = await writeContract(config, {
         abi: staking,
-        address: "0x909a18Ba49580f0277DF1700224ac27500841aD7",
+        address: "0x87Fd96905A40DDE52832ffC059405f788f76314C",
         functionName: "forcedUnstake",
         args: [e],
       });
@@ -219,9 +219,9 @@ export const StakingCard = () => {
   const handleGetStake = async () => {
     try {
       const a = await readContract(config, {
-        chainId: 11155111,
+        chainId: 1,
         abi: staking,
-        address: "0x909a18Ba49580f0277DF1700224ac27500841aD7",
+        address: "0x87Fd96905A40DDE52832ffC059405f788f76314C",
         functionName: "infoUserStake",
         args: [address],
       });
@@ -237,9 +237,9 @@ export const StakingCard = () => {
           const data_contract = [];
           for (let index = 0; index < data_new.length; index++) {
             data_contract.push({
-              chainId: 11155111,
+              chainId: 1,
               abi: staking,
-              address: "0x909a18Ba49580f0277DF1700224ac27500841aD7",
+              address: "0x87Fd96905A40DDE52832ffC059405f788f76314C",
               functionName: "calculateReward",
               args: [address, index],
             });

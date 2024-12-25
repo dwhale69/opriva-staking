@@ -32,7 +32,7 @@ export const handleStats = async (ctx: Context) => {
 
 👥 Total Stakers: ${stats.total_stakers?.toLocaleString() || '0'}
 💎 Total Value Locked: ${stats.total_value_locked?.toLocaleString() || '0'} OPRV
-📈 Current APY: ${stats.current_apy || '10'}%
+📈 Current APY: ${stats.current_apy || '4'}%
 📣 Active Ads: ${stats.active_ads || '0'}
 `;
     await ctx.reply(message);

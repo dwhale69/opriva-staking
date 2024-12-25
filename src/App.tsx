@@ -23,7 +23,7 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 const config = getDefaultConfig({
   appName: "Opriva Terminal",
   projectId: "82a516766258f6d15f17e56cb3858b2b",
-  chains: [sepolia],
+  chains: [mainnet],
   ssr: true, // If your dApp uses server side rendering (SSR)
 });
 

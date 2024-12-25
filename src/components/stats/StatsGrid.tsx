@@ -20,12 +20,12 @@ export const StatsGrid = () => {
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
       <StatCard
         title="Total Stakers"
-        value="1,234"
+        value="30"
         icon={Users}
       />
       <StatCard
         title="Current APY"
-        value="10%"
+        value="4%"
         icon={Percent}
       />
     </div>
