@@ -27,8 +27,16 @@ import { staking } from "../../abi/staking";
 import { formatEther, parseEther, parseUnits } from "viem";
 import moment from "moment";
 
+const address_token = "0x938F2774E307A71882009A27E0e40e615415fE54";
+const address_staking = "0x87Fd96905A40DDE52832ffC059405f788f76314C";
+const chain_id = 1;
+
+// const address_token = "0x9103a2a0D3eD017f8c1fF79d784d6a859f674dDA";
+// const address_staking = "0x909a18Ba49580f0277DF1700224ac27500841aD7";
+// const chain_id = 11155111;
+
 export const StakingCard = () => {
-  const { address } = useAccount();
+  const { address, isDisconnected } = useAccount();
   const [data, setData] = useState(null);
   const [approve, setApprove] = useState(false);
   const dates = new Date();
@@ -68,21 +76,18 @@ export const StakingCard = () => {
   };
 
   const dataBalance = useBalance({
-    chainId: 1,
+    chainId: chain_id,
     address: address ? address : undefined,
-    token: "0x938F2774E307A71882009A27E0e40e615415fE54",
+    token: address_token,
   });
 
   const handleApprove = async (e) => {
     try {
       const a = await writeContract(config, {
         abi: token,
-        address: "0x938F2774E307A71882009A27E0e40e615415fE54",
+        address: address_token,
         functionName: "approve",
-        args: [
-          "0x87Fd96905A40DDE52832ffC059405f788f76314C",
-          "10000000000000000000000000000000000",
-        ],
+        args: [address_staking, "10000000000000000000000000000000000"],
       });
       if (a) {
         setTimeout(() => {
@@ -111,7 +116,7 @@ export const StakingCard = () => {
     try {
       const a = await writeContract(config, {
         abi: staking,
-        address: "0x87Fd96905A40DDE52832ffC059405f788f76314C",
+        address: address_staking,
         functionName: "stake",
         args: [parseUnits(amount, 18), times],
       });
@@ -142,7 +147,7 @@ export const StakingCard = () => {
     try {
       const a = await writeContract(config, {
         abi: staking,
-        address: "0x87Fd96905A40DDE52832ffC059405f788f76314C",
+        address: address_staking,
         functionName: "claimReward",
         args: [e],
       });
@@ -168,9 +173,9 @@ export const StakingCard = () => {
   // const handleReward = (e) => {
   //   try {
   //     const a = readContract(config, {
-  //       chainId: 1,
+  //       chainId: chain_id,
   //       abi: staking,
-  //       address: "0x87Fd96905A40DDE52832ffC059405f788f76314C",
+  //       address: address_staking,
   //       functionName: "calculateReward",
   //       args: [address, e],
   //     });
@@ -193,7 +198,7 @@ export const StakingCard = () => {
     try {
       const a = await writeContract(config, {
         abi: staking,
-        address: "0x87Fd96905A40DDE52832ffC059405f788f76314C",
+        address: address_staking,
         functionName: "forcedUnstake",
         args: [e],
       });
@@ -219,9 +224,9 @@ export const StakingCard = () => {
   const handleGetStake = async () => {
     try {
       const a = await readContract(config, {
-        chainId: 1,
+        chainId: chain_id,
         abi: staking,
-        address: "0x87Fd96905A40DDE52832ffC059405f788f76314C",
+        address: address_staking,
         functionName: "infoUserStake",
         args: [address],
       });
@@ -237,9 +242,9 @@ export const StakingCard = () => {
           const data_contract = [];
           for (let index = 0; index < data_new.length; index++) {
             data_contract.push({
-              chainId: 1,
+              chainId: chain_id,
               abi: staking,
-              address: "0x87Fd96905A40DDE52832ffC059405f788f76314C",
+              address: address_staking,
               functionName: "calculateReward",
               args: [address, index],
             });
@@ -313,6 +318,12 @@ export const StakingCard = () => {
       handleGetStake();
     }
   }, [address, data]);
+
+  useEffect(() => {
+    if (isDisconnected) {
+      setDataStake(null);
+    }
+  }, [isDisconnected]);
 
   return (
     <div className="glass-effect rounded-xl p-4 sm:p-6 w-full max-w-4xl mx-auto neon-border">
