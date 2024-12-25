@@ -1,23 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { Navbar } from './components/layout/Navbar';
-import { BottomNavbar } from './components/layout/BottomNavbar';
-import { StakingCard } from './components/staking/StakingCard';
-import { StatsGrid } from './components/stats/StatsGrid';
-import { LoadingScreen } from './components/loading/LoadingScreen';
-import { AdvertisingForm } from './components/advertising/AdvertisingForm';
-import { DAODashboard } from './components/dao/DAODashboard';
-import { StatsDashboard } from './components/stats/StatsDashboard';
+import React, { useState, useEffect } from "react";
+import { Navbar } from "./components/layout/Navbar";
+import { BottomNavbar } from "./components/layout/BottomNavbar";
+import { StakingCard } from "./components/staking/StakingCard";
+import { StatsGrid } from "./components/stats/StatsGrid";
+import { LoadingScreen } from "./components/loading/LoadingScreen";
+import { AdvertisingForm } from "./components/advertising/AdvertisingForm";
+import { DAODashboard } from "./components/dao/DAODashboard";
+import { StatsDashboard } from "./components/stats/StatsDashboard";
+import "@rainbow-me/rainbowkit/styles.css";
+import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { WagmiProvider } from "wagmi";
+import {
+  mainnet,
+  polygon,
+  optimism,
+  arbitrum,
+  base,
+  sepolia,
+} from "wagmi/chains";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+
+const config = getDefaultConfig({
+  appName: "Opriva Terminal",
+  projectId: "82a516766258f6d15f17e56cb3858b2b",
+  chains: [sepolia],
+  ssr: true, // If your dApp uses server side rendering (SSR)
+});
+
+const queryClient = new QueryClient();
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [activeSection, setActiveSection] = useState<'stake' | 'advertise' | 'dao' | 'stats'>('stake');
+  const [activeSection, setActiveSection] = useState<
+    "stake" | "advertise" | "dao" | "stats"
+  >("stake");
 
   useEffect(() => {
     const createStars = () => {
       const container = document.body;
       for (let i = 0; i < 50; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
+        const star = document.createElement("div");
+        star.className = "star";
         star.style.left = `${Math.random() * 100}vw`;
         star.style.top = `${Math.random() * 100}vh`;
         star.style.animationDelay = `${Math.random() * 3}s`;
@@ -25,14 +48,14 @@ function App() {
       }
 
       const planets = [
-        { size: 100, top: '20%', left: '80%' },
-        { size: 150, top: '60%', left: '10%' },
-        { size: 80, top: '40%', left: '60%' },
+        { size: 100, top: "20%", left: "80%" },
+        { size: 150, top: "60%", left: "10%" },
+        { size: 80, top: "40%", left: "60%" },
       ];
 
       planets.forEach((config) => {
-        const planet = document.createElement('div');
-        planet.className = 'planet';
+        const planet = document.createElement("div");
+        planet.className = "planet";
         planet.style.width = `${config.size}px`;
         planet.style.height = `${config.size}px`;
         planet.style.top = config.top;
@@ -47,22 +70,22 @@ function App() {
     }
 
     return () => {
-      const stars = document.querySelectorAll('.star');
-      const planets = document.querySelectorAll('.planet');
-      stars.forEach(star => star.remove());
-      planets.forEach(planet => planet.remove());
+      const stars = document.querySelectorAll(".star");
+      const planets = document.querySelectorAll(".planet");
+      stars.forEach((star) => star.remove());
+      planets.forEach((planet) => planet.remove());
     };
   }, [isLoading]);
 
   const renderContent = () => {
     switch (activeSection) {
-      case 'advertise':
+      case "advertise":
         return <AdvertisingForm />;
-      case 'dao':
+      case "dao":
         return <DAODashboard />;
-      case 'stats':
+      case "stats":
         return <StatsDashboard />;
-      case 'stake':
+      case "stake":
         return (
           <>
             <div className="mb-12">
@@ -80,17 +103,26 @@ function App() {
 
   return (
     <>
-      {isLoading ? (
-        <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />
-      ) : (
-        <div className="min-h-screen w-full pb-16">
-          <Navbar />
-          <main className="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-            {renderContent()}
-          </main>
-          <BottomNavbar activeSection={activeSection} onSectionChange={setActiveSection} />
-        </div>
-      )}
+      <WagmiProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          <RainbowKitProvider>
+            {isLoading ? (
+              <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />
+            ) : (
+              <div className="min-h-screen w-full pb-16">
+                <Navbar />
+                <main className="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                  {renderContent()}
+                </main>
+                <BottomNavbar
+                  activeSection={activeSection}
+                  onSectionChange={setActiveSection}
+                />
+              </div>
+            )}
+          </RainbowKitProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
     </>
   );
 }

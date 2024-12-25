@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Wallet } from 'lucide-react';
-import { OprivaLogo } from './OprivaLogo';
-import { useWalletContext } from '../../context/WalletContext';
+import React, { useState } from "react";
+import { Wallet } from "lucide-react";
+import { OprivaLogo } from "./OprivaLogo";
+import { useWalletContext } from "../../context/WalletContext";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export const Navbar = () => {
   const [showModal, setShowModal] = useState(false);
@@ -28,20 +29,96 @@ export const Navbar = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <OprivaLogo />
-            <button
+            <ConnectButton.Custom>
+              {({
+                account,
+                chain,
+                openAccountModal,
+                openChainModal,
+                openConnectModal,
+                authenticationStatus,
+                mounted,
+              }) => {
+                // Note: If your app doesn't use authentication, you
+                // can remove all 'authenticationStatus' checks
+                const ready = mounted && authenticationStatus !== "loading";
+                const connected =
+                  ready &&
+                  account &&
+                  chain &&
+                  (!authenticationStatus ||
+                    authenticationStatus === "authenticated");
+
+                return (
+                  <div
+                    {...(!ready && {
+                      "aria-hidden": true,
+                      style: {
+                        opacity: 0,
+                        pointerEvents: "none",
+                        userSelect: "none",
+                      },
+                    })}
+                  >
+                    {(() => {
+                      if (!connected) {
+                        return (
+                          <button
+                            className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-[#8396FA] hover:bg-[#899CFA] transition-colors text-white font-medium text-sm sm:text-base"
+                            onClick={openConnectModal}
+                            type="button"
+                          >
+                            <Wallet size={18} className="hidden sm:block" />
+                            Connect Wallet
+                          </button>
+                        );
+                      }
+
+                      if (chain.unsupported) {
+                        return (
+                          <button
+                            className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-[#8396FA] hover:bg-[#899CFA] transition-colors text-white font-medium text-sm sm:text-base"
+                            onClick={openChainModal}
+                            type="button"
+                          >
+                            Wrong network
+                          </button>
+                        );
+                      }
+
+                      return (
+                        <div style={{ display: "flex", gap: 12 }}>
+                          <button
+                            className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-[#8396FA] hover:bg-[#899CFA] transition-colors text-white font-medium text-sm sm:text-base"
+                            onClick={openAccountModal}
+                            type="button"
+                          >
+                            {account.displayName}
+                            {account.displayBalance
+                              ? ` (${account.displayBalance})`
+                              : ""}
+                          </button>
+                        </div>
+                      );
+                    })()}
+                  </div>
+                );
+              }}
+            </ConnectButton.Custom>
+            {/* <button
               className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-[#8396FA] hover:bg-[#899CFA] transition-colors text-white font-medium text-sm sm:text-base"
               onClick={handleConnect}
             >
               <Wallet size={18} className="hidden sm:block" />
               {account ? formatAddress(account) : 'Connect Wallet'}
-            </button>
+            </button> */}
           </div>
         </div>
       </nav>
 
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div 
+          <div
             className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={() => setShowModal(false)}
           />
@@ -49,7 +126,7 @@ export const Navbar = () => {
             <h3 className="text-xl font-semibold text-white mb-6 text-center">
               Connect Wallet
             </h3>
-            
+
             <button
               onClick={handleWalletConnect}
               className="w-full p-4 rounded-lg bg-[#1f2023] hover:bg-[#2a2b2f] transition-all border border-[#8396FA]/20 hover:border-[#8396FA] group"
