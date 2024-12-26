@@ -24,7 +24,7 @@ export const StatsGrid = () => {
         icon={Users}
       />
       <StatCard
-        title="Current APY"
+        title="Current APYY"
         value="240%"
         icon={Percent}
       />
