@@ -1,3 +1,4 @@
+import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { http, createConfig, injected } from "@wagmi/core";
 import { sepolia } from "@wagmi/core/chains";
 
@@ -39,7 +40,10 @@ const mainnet: any = {
 //     [sepolia.id]: http(),
 //   },
 // });
-export const config = createConfig({
+
+export const config = getDefaultConfig({
+  appName: "Opriva Terminal",
+  projectId: "82a516766258f6d15f17e56cb3858b2b",
   chains: [mainnet],
   transports: {
     [mainnet.id]: http(),
