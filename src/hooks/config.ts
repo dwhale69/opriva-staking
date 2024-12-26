@@ -45,6 +45,7 @@ export const config = getDefaultConfig({
   appName: "Opriva Terminal",
   projectId: "82a516766258f6d15f17e56cb3858b2b",
   chains: [mainnet],
+  ssr: false,
   transports: {
     [mainnet.id]: http(),
   },

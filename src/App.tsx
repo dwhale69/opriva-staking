@@ -49,7 +49,7 @@ const config = getDefaultConfig({
   projectId: "82a516766258f6d15f17e56cb3858b2b",
   chains: [mainnet],
   // chains: [mainnet, sepolia],
-  ssr: true, // If your dApp uses server side rendering (SSR)
+  ssr: false, // If your dApp uses server side rendering (SSR)
 });
 
 const queryClient = new QueryClient();
